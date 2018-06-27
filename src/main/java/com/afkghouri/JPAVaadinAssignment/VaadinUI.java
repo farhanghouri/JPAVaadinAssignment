@@ -13,9 +13,6 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("valo")
 public class VaadinUI extends UI{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	VerticalLayout mainLayout;
 	@Autowired
@@ -26,14 +23,14 @@ public class VaadinUI extends UI{
 	
 	@Override
 	protected void init(VaadinRequest request) { 
+		System.out.println("init");
 		setLayout(mainLayout); 
-		setLabel();
+		setFormLabel();
 		setFormLayout();
 		setListLayout();
 	}
 
-	private void setListLayout() { 
-		System.out.println("vaui: "+listLayout);
+	private void setListLayout() {  
 		mainLayout.addComponent(listLayout);
 	}
 
@@ -41,7 +38,7 @@ public class VaadinUI extends UI{
 		mainLayout.addComponent(formLayout);
 	}
 
-	private void setLabel() { 
+	private void setFormLabel() { 
 		com.vaadin.ui.Label label = new com.vaadin.ui.Label("PRODUCT'S FORM");
 		mainLayout.addComponent(label);
 	}

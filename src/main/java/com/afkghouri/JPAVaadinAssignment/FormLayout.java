@@ -13,10 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @Component
 public class FormLayout extends VerticalLayout{
-
-	/**
-	 * 
-	 */
+ 
 	private static final long serialVersionUID = 1L;
 	TextField textField_name,textField_price,textField_quantity;
 	ComboBox<String> cb_category;
@@ -34,7 +31,7 @@ public class FormLayout extends VerticalLayout{
 	}
 	 
 
-	private void createForm() {
+	private void createForm() { 
 		 textField_name = new TextField("enter name");
 			 
 		 textField_price = new TextField("enter price");
@@ -43,16 +40,15 @@ public class FormLayout extends VerticalLayout{
 			 
 		 cb_category = new ComboBox<String>("Category",Arrays.asList(strings)); 
 			   
-		Button button_submit = new Button("ADD"); 
-		button_submit.addClickListener(new Button.ClickListener() { 
-			private static final long serialVersionUID = 1L;
-
-			public void buttonClick(ClickEvent event) { 
-		    	save();
-		    }
-		});  
+		 Button button_submit = new Button("ADD"); 
+		 button_submit.addClickListener(new Button.ClickListener() { 
+				private static final long serialVersionUID = 1L;
+				public void buttonClick(ClickEvent event) { 
+			    	save();
+			    }
+		 });  
 		
-        addComponents(textField_name,textField_price,textField_quantity,cb_category,button_submit);
+         addComponents(textField_name,textField_price,textField_quantity,cb_category,button_submit);
 		
 	}
 	
