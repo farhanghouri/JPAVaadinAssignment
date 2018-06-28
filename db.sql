@@ -7,7 +7,10 @@ CREATE TABLE products(
    oid BIGINT PRIMARY KEY     NOT NULL AUTO_INCREMENT,
    name VARCHAR(30),
    price Integer,
-   quantity Integer
+   quantity Integer,
+   oid_category BIGINT,
+   FOREIGN KEY (oid_category) REFERENCES category(oid)
+
 );
 
 CREATE TABLE products(
@@ -16,11 +19,11 @@ CREATE TABLE products(
    price Integer,
    quantity Integer
 );
-CREATE TABLE employees(
-   oid BIGINT PRIMARY KEY     NOT NULL,
-   ename VARCHAR(20),
-   phno Integer
+CREATE TABLE category(
+   oid BIGINT  PRIMARY KEY     NOT NULL,
+   name VARCHAR(30)
 );
+ 
 
 INSERT INTO products VALUES(1,'tv',3000,'10');
 INSERT INTO products VALUES(2,'laptop',3000,'10');

@@ -17,7 +17,7 @@ public class ProductController {
     		System.out.println("product name: "+pm.name);
     		System.out.println("product price: "+pm.price);
     		System.out.println("product quantity: "+pm.quantity);
-    	}*/
+    	}*/ 
     	return productRepository.findAll();
     	 
     }

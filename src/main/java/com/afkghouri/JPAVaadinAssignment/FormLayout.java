@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.	ui.ComboBox;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -28,6 +29,7 @@ public class FormLayout extends VerticalLayout{
    
      
 	public FormLayout(){ 
+		System.out.println("In FormLayout constructor:");
 	}
 	@PostConstruct
 	void init(){
@@ -64,6 +66,9 @@ public class FormLayout extends VerticalLayout{
     	productController.save(productModel);  
     	
     	listLayout.createList(); 
+		Notification.show("New Product Added",
+                "Successfully!",
+                Notification.Type.HUMANIZED_MESSAGE);
 	}
 	 
 	

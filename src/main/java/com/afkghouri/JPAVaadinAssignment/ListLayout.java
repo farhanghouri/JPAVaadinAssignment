@@ -22,6 +22,7 @@ public class ListLayout extends VerticalLayout{
 	ListLayout listLayout;
 	 
 	public ListLayout() { 
+		System.out.println("In ListLayout constructor:");
 	}
 	/**
 	 * @PostConstruct is an annotation used on a method that needs to be executed 
@@ -44,6 +45,7 @@ public class ListLayout extends VerticalLayout{
 	public void createList() {
 		removeAllComponents();
 		setProductLabel();
+		
 		List<ProductModel> list = productController.findAll();
 		
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -55,8 +57,7 @@ public class ListLayout extends VerticalLayout{
 			for(ProductModel productModel:list)
 				//addComponent(new ProductList(pm));  
 				addComponent(ctx.getBean(ProductList.class,productModel,productController,listLayout));
-		
 		 
-  
+        ctx.close(); 
 	}
 }

@@ -15,6 +15,7 @@ public class Waseem {
 	Button b; 
 	ProductController pc;
 	
+	public Waseem(){}
 	public Waseem(ProductModel pm,ProductController pc) {
 		System.out.println("In waseem constructor ");
 		this.pm=pm;
