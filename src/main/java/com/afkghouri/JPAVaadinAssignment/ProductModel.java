@@ -3,6 +3,7 @@ package com.afkghouri.JPAVaadinAssignment;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +17,9 @@ public class ProductModel {
      public int price;
      @Column(name="quantity")
      public int quantity;
+     
+     @ManyToOne
+     public CategoryModel categoryModel;
      
 	public long getOid() {
 		return oid;

@@ -19,7 +19,7 @@ CREATE TABLE products(
    price Integer,
    quantity Integer
 );
-CREATE TABLE category(
+CREATE TABLE categories(
    oid BIGINT  PRIMARY KEY     NOT NULL,
    name VARCHAR(30)
 );
