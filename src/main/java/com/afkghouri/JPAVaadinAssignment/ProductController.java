@@ -26,4 +26,9 @@ public class ProductController {
     	System.out.println("save() call:");
     	productRepository.save(productModel);
     }
+    public void deleteById(long oid){
+    	System.out.println("deleteById() call:");
+    	productRepository.deleteById(oid);
+    }
+    
 }

@@ -2,48 +2,29 @@ package com.afkghouri.JPAVaadinAssignment;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component; 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Button.ClickEvent;
-
-@Component
+ 
 public class ProductList extends HorizontalLayout{
  
 	private static final long serialVersionUID = 1L;
 	TextField name,price,quantity;
 	Button button_update,button_delete;
-	@Autowired
+	ProductModel productModel;
 	ProductController productController;
-	@Autowired
-	ListLayout listLayout;
-	ProductController pc;
-	ListLayout ll;
+	ListLayout listLayout; 
+
 	@PostConstruct
 	void init(){
-    	System.out.println("pc: "+productController+" ll: "+listLayout);
-    	pc = productController; 	ll = listLayout;
-    	System.out.println("PC: "+pc+" LL: "+ll);
-    	button_update = new Button("Update");
-    	button_update.setData((long)3);
-    	button_update.addClickListener(new Button.ClickListener() { 
-			private static final long serialVersionUID = 1L;
-			public void buttonClick(ClickEvent event) {  
-				update((long)event.getButton().getData()); 
-		    }
-	 });
-    	addComponent(button_update);
-		 
-	}
-	public ProductList() {
-		// TODO Auto-generated constructor stub
-		System.out.println("oo");
-	}
-	public ProductList(ProductModel productModel){
-		System.out.println("In ProductList");
-		name = new TextField();
+		System.out.println("In ProductList init: ");
+		
+	    name = new TextField();
 		price = new TextField();
 		quantity = new TextField();
 		
@@ -54,6 +35,7 @@ public class ProductList extends HorizontalLayout{
 		button_update = new Button("Update");
 		button_update.setData(productModel.oid);
 		button_delete = new Button("Delete");
+		button_delete.setData(productModel.oid);
 		
 		addComponents(name,price,quantity,button_update,button_delete);
 		
@@ -61,23 +43,43 @@ public class ProductList extends HorizontalLayout{
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) {  
 					update((long)event.getButton().getData()); 
+					name.addStyleName(ValoTheme.BUTTON_PRIMARY);
+					price.addStyleName(ValoTheme.BUTTON_PRIMARY);
+					quantity.addStyleName(ValoTheme.BUTTON_PRIMARY);
 			    }
-		 }); 
-    	System.out.println("pc: "+pc+" ll: "+ll); 
+		 });
+		button_delete.addClickListener(new Button.ClickListener() { 
+			private static final long serialVersionUID = 1L;
+			public void buttonClick(ClickEvent event) {  
+				deleteById((long)event.getButton().getData()); 
+		    }
+	 });
 		
-		
+		 
+	}
+	public ProductList() { 
+	} 
+	public ProductList(ProductModel productModel,ProductController productController,ListLayout listLayout){
+		System.out.println("In ProductList constructor: ");
+		this.productModel = productModel;
+		this.productController = productController;
+		this.listLayout = listLayout;
 	}
 
+	
+	protected void deleteById(long oid) {
+		productController.deleteById(oid);
+		listLayout.createList(); 
+	} 
 	protected void update(long oid) {
-	/*	ProductModel productModel = new ProductModel(); 
+		ProductModel productModel = new ProductModel(); 
 		productModel.setOid(oid);
     	productModel.setName(name.getValue());
     	productModel.setPrice(Integer.parseInt(price.getValue()));
-    	productModel.setQuantity(Integer.parseInt(quantity.getValue())); */
-    	//productController.save(productModel); 
+    	productModel.setQuantity(Integer.parseInt(quantity.getValue())); 
+    	productController.save(productModel); 
     	
-    	//listLayout.createList();
-    	System.out.println("pc: "+pc+" ll: "+ll); 
+    	listLayout.createList(); 
     	
 	}
 	

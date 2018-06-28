@@ -1,6 +1,8 @@
 package com.afkghouri.JPAVaadinAssignment;
 
-import java.util.Arrays; 
+import java.util.Arrays;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,11 +27,13 @@ public class FormLayout extends VerticalLayout{
     private String[] strings = new String[] { "electronic", "food", "clothes" };
    
      
-	public FormLayout(){
-		System.out.println("In FormLayout");
-		createForm();  
+	public FormLayout(){ 
 	}
-	 
+	@PostConstruct
+	void init(){
+		System.out.println("In FormLayout init:");
+		createForm(); 
+	}
 
 	private void createForm() { 
 		 textField_name = new TextField("enter name");
