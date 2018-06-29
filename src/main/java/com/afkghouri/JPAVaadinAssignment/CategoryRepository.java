@@ -2,6 +2,6 @@ package com.afkghouri.JPAVaadinAssignment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<EmployeeModel, Long> {
+public interface CategoryRepository extends JpaRepository<CategoryModel, Long> {
 
 }

@@ -8,8 +8,8 @@ CREATE TABLE products(
    name VARCHAR(30),
    price Integer,
    quantity Integer,
-   oid_category BIGINT,
-   FOREIGN KEY (oid_category) REFERENCES category(oid)
+   categories_oid BIGINT,
+   FOREIGN KEY (categories_oid) REFERENCES categories(oid)
 
 );
 
@@ -20,13 +20,18 @@ CREATE TABLE products(
    quantity Integer
 );
 CREATE TABLE categories(
-   oid BIGINT  PRIMARY KEY     NOT NULL,
+   oid BIGINT  PRIMARY KEY     NOT NULL AUTO_INCREMENT,
    name VARCHAR(30)
 );
- 
+INSERT INTO categories(name) VALUES ("food");
+INSERT INTO categories(name) VALUES ("electronic");
+INSERT INTO categories(name) VALUES ("cloth");
 
 INSERT INTO products VALUES(1,'tv',3000,'10');
 INSERT INTO products VALUES(2,'laptop',3000,'10');
 
 INSERT INTO products(name,price,quantity) VALUES('tv',3000,'10');
 INSERT INTO products(name,price,quantity) VALUES('laptop',5000,'14');
+
+drop table products;
+drop table categories;

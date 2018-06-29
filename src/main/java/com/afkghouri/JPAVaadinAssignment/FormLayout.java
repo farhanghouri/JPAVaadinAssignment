@@ -24,6 +24,8 @@ public class FormLayout extends VerticalLayout{
 	ProductController productController;
 	@Autowired
 	ListLayout listLayout; 
+	@Autowired
+	CategoryRepository categoryRepository;
 	
     private String[] strings = new String[] { "electronic", "food", "clothes" };
    
@@ -63,7 +65,16 @@ public class FormLayout extends VerticalLayout{
     	productModel.setName(textField_name.getValue());
     	productModel.setPrice(Integer.parseInt(textField_price.getValue()));
     	productModel.setQuantity(Integer.parseInt(textField_quantity.getValue()));
-    	productController.save(productModel);  
+    	
+    	CategoryModel categoryModel = new CategoryModel();
+    	categoryModel.setName("electronic");
+    	categoryModel.setOid(3); 
+    	//productModel.setCategoryModel(categoryModel); 
+    	
+    	categoryRepository.save(categoryModel);
+    	productController.save(productModel);
+    	
+    	
     	
     	listLayout.createList(); 
 		Notification.show("New Product Added",

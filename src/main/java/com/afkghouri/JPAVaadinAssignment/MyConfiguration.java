@@ -11,18 +11,5 @@ public class MyConfiguration {
 	    public ProductList myBean(ProductModel productModel,ProductController productController,ListLayout listLayout) { 
 	    	return new ProductList(productModel,productController,listLayout);
 	    }
-	    
-	    
-	/*@Bean
-    @Scope(value="prototype")
-	    public Waseem myBean() { 
-	    	return new Waseem();
-	    }
-	*/
-	    /*    @Bean
-    @Scope(value="prototype")
-    public Waseem myBean(ProductModel pm,ProductController pc) { 
-    	return new Waseem(pm,pc);
-    }*/
-	    
+	     
 }

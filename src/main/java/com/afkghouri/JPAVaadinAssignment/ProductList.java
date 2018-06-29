@@ -43,10 +43,7 @@ public class ProductList extends HorizontalLayout{
 		button_update.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) {  
-					update((long)event.getButton().getData()); 
-					name.addStyleName(ValoTheme.BUTTON_PRIMARY);
-					price.addStyleName(ValoTheme.BUTTON_PRIMARY);
-					quantity.addStyleName(ValoTheme.BUTTON_PRIMARY);
+					update((long)event.getButton().getData());  
 			    }
 		 });
 		button_delete.addClickListener(new Button.ClickListener() { 
