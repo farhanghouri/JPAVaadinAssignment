@@ -37,7 +37,8 @@ public class ListLayout extends VerticalLayout{
 	private void setProductLabel() {
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.addComponents(new Label("name"),new Label("price"),new Label("quantity"));
-		horizontalLayout.setWidth("80%");
+		horizontalLayout.setWidth("100%");
+		horizontalLayout.setMargin(true);
 		addComponent(horizontalLayout);
 		
 	} 
@@ -54,9 +55,10 @@ public class ListLayout extends VerticalLayout{
 		
 	
 		if(list != null)
-			for(ProductModel productModel:list)
+			for(ProductModel productModel:list){
 				//addComponent(new ProductList(pm));  
 				addComponent(ctx.getBean(ProductList.class,productModel,productController,listLayout));
+			}
 		 
         ctx.close(); 
 	}

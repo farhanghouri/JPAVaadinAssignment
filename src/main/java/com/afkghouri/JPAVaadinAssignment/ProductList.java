@@ -3,18 +3,22 @@ package com.afkghouri.JPAVaadinAssignment;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.vaadin.data.HasValue.ValueChangeEvent;
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CheckBox;
  
 public class ProductList extends HorizontalLayout{
  
 	private static final long serialVersionUID = 1L;
+	CheckBox checkBox;
 	TextField name,price,quantity;
-	Button button_update,button_delete;
+	Button button_update,button_delete; 
 	ProductModel productModel;
 	ProductController productController;
 	ListLayout listLayout; 
@@ -25,11 +29,25 @@ public class ProductList extends HorizontalLayout{
 		
 	    name = new TextField();
 		price = new TextField();
-		quantity = new TextField();
+		quantity = new TextField(); 
+		checkBox = new CheckBox("",true);  
+		  
+		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent<Boolean> event) { 
+				name.setReadOnly(checkBox.getValue());
+				price.setReadOnly(checkBox.getValue());
+				quantity.setReadOnly(checkBox.getValue());
+			}
+		});
 		
 		name.setValue(productModel.getName());
+		name.setReadOnly(true);
 		price.setValue(String.valueOf(productModel.getPrice()));
+		price.setReadOnly(true);
 		quantity.setValue(String.valueOf(productModel.getQuantity())); 
+		quantity.setReadOnly(true);
 		
 		button_update = new Button("Update");
 		button_update.setData(productModel.oid);
@@ -38,18 +56,29 @@ public class ProductList extends HorizontalLayout{
 		button_delete.setData(productModel.oid);
 		button_delete.addStyleName(ValoTheme.BUTTON_DANGER);
 		
-		addComponents(name,price,quantity,button_update,button_delete);
+		addComponents(checkBox,name,price,quantity,button_update,button_delete);
 		
 		button_update.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) {  
-					update((long)event.getButton().getData());  
+				   if(checkBox.getValue())
+					   Notification.show("Uncheck:",
+				                "To Update.",
+				                Notification.Type.HUMANIZED_MESSAGE);
+				   else{
+					   update(); 
+					   checkBox.setValue(true);
+					   name.setReadOnly(true);
+					   price.setReadOnly(true);
+					   quantity.setReadOnly(true);
+				   }
 			    }
 		 });
 		button_delete.addClickListener(new Button.ClickListener() { 
 			private static final long serialVersionUID = 1L;
 			public void buttonClick(ClickEvent event) {  
-				deleteById((long)event.getButton().getData()); 
+				//(long)event.getButton().getData()
+				deleteById((long)button_delete.getData()); 
 		    }
 	 });
 		
@@ -73,15 +102,14 @@ public class ProductList extends HorizontalLayout{
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
 	} 
-	protected void update(long oid) {
-		ProductModel productModel = new ProductModel(); 
-		productModel.setOid(oid);
+	protected void update() { 
     	productModel.setName(name.getValue());
     	productModel.setPrice(Integer.parseInt(price.getValue()));
-    	productModel.setQuantity(Integer.parseInt(quantity.getValue())); 
+    	productModel.setQuantity(Integer.parseInt(quantity.getValue()));  
+    	
     	productController.save(productModel); 
     	
-    	listLayout.createList(); 
+    	//listLayout.createList(); 
 		Notification.show("Updated",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);

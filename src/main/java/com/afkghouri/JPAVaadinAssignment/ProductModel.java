@@ -3,6 +3,7 @@ package com.afkghouri.JPAVaadinAssignment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -28,13 +29,19 @@ public class ProductModel {
      @Column(name="quantity")
      public int quantity;
      
-    // @ManyToOne
-     //public CategoryModel categoryModel;
+//     @OneToOne
+//     @JoinColumn(name="categories_oid")
+//     public CategoryModel categoryModel;
 
       
-     @OneToMany
-    // @JoinColumn(name="categories_oid")
-     public List<CategoryModel> categoryModel = new ArrayList<>();
+//     @OneToMany
+//     @JoinColumn(name="categories_oid")
+//     public List<CategoryModel> categoryModel = new ArrayList<>();
+     
+     @ManyToOne
+     @JoinColumn(name="categories_oid")
+     public CategoryModel categoryModel;
+      
      
 	public long getOid() {
 		return oid;
@@ -60,12 +67,21 @@ public class ProductModel {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public List<CategoryModel> getCategoryModel() {
+	
+	public CategoryModel getCategoryModel() {
 		return categoryModel;
 	}
-	public void setCategoryModel(List<CategoryModel> categoryModel) {
+	public void setCategoryModel(CategoryModel categoryModel) {
 		this.categoryModel = categoryModel;
 	}
+	
+	
+//	public List<CategoryModel> getCategoryModel() {
+//		return categoryModel;
+//	}
+//	public void setCategoryModel(List<CategoryModel> categoryModel) {
+//		this.categoryModel = categoryModel;
+//	}
 	 
 	
 

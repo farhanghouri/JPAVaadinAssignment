@@ -25,9 +25,10 @@ public class FormLayout extends VerticalLayout{
 	@Autowired
 	ListLayout listLayout; 
 	@Autowired
-	CategoryRepository categoryRepository;
+	CategoryController categoryController;
 	
-    private String[] strings = new String[] { "electronic", "food", "clothes" };
+	
+    private String[] strings = new String[] { "electronic", "food", "cloth" };
    
      
 	public FormLayout(){ 
@@ -47,7 +48,9 @@ public class FormLayout extends VerticalLayout{
 		 textField_quantity = new TextField("enter quantity");
 			 
 		 cb_category = new ComboBox<String>("Category",Arrays.asList(strings)); 
-			   
+		 cb_category.setEmptySelectionAllowed(false);   
+		 cb_category.setValue(strings[0]);
+		 
 		 Button button_submit = new Button("ADD"); 
 		 button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
@@ -64,17 +67,11 @@ public class FormLayout extends VerticalLayout{
 		ProductModel productModel = new ProductModel(); 
     	productModel.setName(textField_name.getValue());
     	productModel.setPrice(Integer.parseInt(textField_price.getValue()));
-    	productModel.setQuantity(Integer.parseInt(textField_quantity.getValue()));
-    	
-    	CategoryModel categoryModel = new CategoryModel();
-    	categoryModel.setName("electronic");
-    	categoryModel.setOid(3); 
-    	//productModel.setCategoryModel(categoryModel); 
-    	
-    	categoryRepository.save(categoryModel);
-    	productController.save(productModel);
-    	
-    	
+    	productModel.setQuantity(Integer.parseInt(textField_quantity.getValue())); 
+    	 
+    	productModel.setCategoryModel(categoryController.findByName(cb_category.getValue()));  
+    	 
+    	productController.save(productModel); 
     	
     	listLayout.createList(); 
 		Notification.show("New Product Added",
