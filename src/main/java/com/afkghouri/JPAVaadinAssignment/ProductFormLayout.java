@@ -1,6 +1,8 @@
 package com.afkghouri.JPAVaadinAssignment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -15,7 +17,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @Component
-public class FormLayout extends VerticalLayout{
+public class ProductFormLayout extends VerticalLayout{
  
 	private static final long serialVersionUID = 1L;
 	TextField textField_name,textField_price,textField_quantity;
@@ -23,15 +25,13 @@ public class FormLayout extends VerticalLayout{
 	@Autowired
 	ProductController productController;
 	@Autowired
-	ListLayout listLayout; 
+	ProductListLayout productListLayout; 
 	@Autowired
-	CategoryController categoryController;
-	
-	
-    private String[] strings = new String[] { "electronic", "food", "cloth" };
-   
+	CategoryController categoryController; 
+
+	List<String> list_category = new ArrayList<>();
      
-	public FormLayout(){ 
+	public ProductFormLayout(){ 
 		System.out.println("In FormLayout constructor:");
 	}
 	@PostConstruct
@@ -47,9 +47,9 @@ public class FormLayout extends VerticalLayout{
 			 
 		 textField_quantity = new TextField("enter quantity");
 			 
-		 cb_category = new ComboBox<String>("Category",Arrays.asList(strings)); 
-		 cb_category.setEmptySelectionAllowed(false);   
-		 cb_category.setValue(strings[0]);
+		 cb_category = new ComboBox<String>("Category"); 
+		 setCategoriesFromDB();
+		 cb_category.setEmptySelectionAllowed(false);    
 		 
 		 Button button_submit = new Button("ADD"); 
 		 button_submit.addClickListener(new Button.ClickListener() { 
@@ -73,10 +73,25 @@ public class FormLayout extends VerticalLayout{
     	 
     	productController.save(productModel); 
     	
-    	listLayout.createList(); 
+    	productListLayout.createList(); 
 		Notification.show("New Product Added",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
+	}
+	
+	void setCategoriesFromDB(){
+		list_category.clear(); 
+		categoryController.findAll().forEach(categoryModel->{
+			list_category.add(categoryModel.getName());
+		}); 
+			 
+		cb_category.setItems(list_category);
+		cb_category.setValue(list_category.get(0));
+	}
+	void cascadingEffect(boolean delete_flag){
+		setCategoriesFromDB(); 
+		if(delete_flag)
+		   productListLayout.createList();
 	}
 	 
 	

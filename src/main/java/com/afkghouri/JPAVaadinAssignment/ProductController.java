@@ -11,13 +11,7 @@ public class ProductController {
     ProductRepository productRepository;
     
     public List<ProductModel> findAll(){
-    	System.out.println("findAll() call: ");
-    	/*for(ProductModel pm : productRepository.findAll()){
-    		System.out.println("product id: "+pm.oid);
-    		System.out.println("product name: "+pm.name);
-    		System.out.println("product price: "+pm.price);
-    		System.out.println("product quantity: "+pm.quantity);
-    	}*/ 
+    	System.out.println("findAll() call: "); 
     	return productRepository.findAll();
     	 
     }

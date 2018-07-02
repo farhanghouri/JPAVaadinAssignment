@@ -11,7 +11,6 @@ public class JpaVaadinAssignmentApplication {
 
 	public static void main(String[] args) { 
 		   ConfigurableApplicationContext configurableApplicationContext =  SpringApplication.run(JpaVaadinAssignmentApplication.class, args);
-	  //     EmployeeController  employeeController = configurableApplicationContext.getBean(EmployeeController.class); 
-	    //   employeeController.findAll();
+	   
 	}
 }

@@ -1,16 +1,14 @@
 package com.afkghouri.JPAVaadinAssignment;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,15 +19,10 @@ public class CategoryModel {
       public long oid;
       public String name;
       
-//      @OneToOne
-//      @JoinColumn(name="products_oid")
-//      public ProductModel productModel;
-      
-     //   @ManyToOne
-       // public ProductModel productModel;
-      
-//      @OneToMany(mappedBy = "categoryModel")
-//      public List<ProductModel> productModels = new ArrayList<>();
+      @OneToMany(cascade = CascadeType.ALL)
+      @JoinColumn(name="categories_oid")
+      List<ProductModel> list;
+       
       
 	public long getOid() {
 		return oid;
@@ -43,13 +36,6 @@ public class CategoryModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-//	public ProductModel getProductModel() {
-//		return productModel;
-//	}
-//	public void setProductModel(ProductModel productModel) {
-//		this.productModel = productModel;
-//	}
-	
+  
 	
 }

@@ -5,6 +5,7 @@ import javax.annotation.PreDestroy;
 
 import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.HasValue.ValueChangeListener;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -21,19 +22,23 @@ public class ProductList extends HorizontalLayout{
 	Button button_update,button_delete; 
 	ProductModel productModel;
 	ProductController productController;
-	ListLayout listLayout; 
+	ProductListLayout productListLayout; 
 
+	public ProductList() { 
+	} 
 	@PostConstruct
 	void init(){
 		System.out.println("In ProductList init: ");
 		
-	    name = new TextField();
-		price = new TextField();
+	    name     = new TextField();
+		price    = new TextField();
 		quantity = new TextField(); 
 		checkBox = new CheckBox("",true);  
 		  
-		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() {
-			
+		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() { 
+			 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void valueChange(ValueChangeEvent<Boolean> event) { 
 				name.setReadOnly(checkBox.getValue());
@@ -43,14 +48,14 @@ public class ProductList extends HorizontalLayout{
 		});
 		
 		name.setValue(productModel.getName());
-		name.setReadOnly(true);
+		name.setReadOnly(true); 
 		price.setValue(String.valueOf(productModel.getPrice()));
 		price.setReadOnly(true);
 		quantity.setValue(String.valueOf(productModel.getQuantity())); 
 		quantity.setReadOnly(true);
 		
 		button_update = new Button("Update");
-		button_update.setData(productModel.oid);
+		button_update.setData(productModel.getOid());
 		button_update.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		button_delete = new Button("Delete");
 		button_delete.setData(productModel.oid);
@@ -84,20 +89,19 @@ public class ProductList extends HorizontalLayout{
 		
 		 
 	}
-	public ProductList() { 
-	} 
-	public ProductList(ProductModel productModel,ProductController productController,ListLayout listLayout){
+	
+	public ProductList(ProductModel productModel,ProductController productController,ProductListLayout productListLayout){
 		System.out.println("In ProductList constructor: ");
 		this.productModel = productModel;
 		this.productController = productController;
-		this.listLayout = listLayout;
+		this.productListLayout = productListLayout;
 	}
 
 	
 	protected void deleteById(long oid) {
 		productController.deleteById(oid);
 		
-		listLayout.createList(); 
+		productListLayout.createList(); 
 		Notification.show("Deleted",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
@@ -108,11 +112,10 @@ public class ProductList extends HorizontalLayout{
     	productModel.setQuantity(Integer.parseInt(quantity.getValue()));  
     	
     	productController.save(productModel); 
-    	
-    	//listLayout.createList(); 
+    	 
 		Notification.show("Updated",
                 "Successfully!",
-                Notification.Type.HUMANIZED_MESSAGE);
+                Notification.Type.HUMANIZED_MESSAGE); 
     	
 	}
 	@PreDestroy

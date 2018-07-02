@@ -1,19 +1,13 @@
 package com.afkghouri.JPAVaadinAssignment;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
+ 
+ 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
+import javax.persistence.Entity; 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne; 
 import javax.persistence.Table;
 
 @Entity
@@ -28,15 +22,7 @@ public class ProductModel {
      public int price;
      @Column(name="quantity")
      public int quantity;
-     
-//     @OneToOne
-//     @JoinColumn(name="categories_oid")
-//     public CategoryModel categoryModel;
-
       
-//     @OneToMany
-//     @JoinColumn(name="categories_oid")
-//     public List<CategoryModel> categoryModel = new ArrayList<>();
      
      @ManyToOne
      @JoinColumn(name="categories_oid")
@@ -74,16 +60,7 @@ public class ProductModel {
 	public void setCategoryModel(CategoryModel categoryModel) {
 		this.categoryModel = categoryModel;
 	}
-	
-	
-//	public List<CategoryModel> getCategoryModel() {
-//		return categoryModel;
-//	}
-//	public void setCategoryModel(List<CategoryModel> categoryModel) {
-//		this.categoryModel = categoryModel;
-//	}
 	 
-	
 
      
 }

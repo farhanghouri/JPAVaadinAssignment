@@ -2,11 +2,17 @@ package com.afkghouri.JPAVaadinAssignment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+ 
 import com.vaadin.annotations.Theme;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.spring.annotation.SpringUI; 
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.UI; 
+import com.vaadin.ui.themes.ValoTheme;
  
 
 @SpringUI
@@ -14,39 +20,46 @@ import com.vaadin.ui.VerticalLayout;
 public class VaadinUI extends UI{
 
 	private static final long serialVersionUID = 1L;
-	VerticalLayout mainLayout;
+	HorizontalLayout mainLayout;
 	@Autowired
-	FormLayout formLayout;
+	ProductView productView;
 	@Autowired
-	ListLayout listLayout;
-	
-	
+	CategoryView categoryView;
+	 
 	@Override
 	protected void init(VaadinRequest request) { 
 		System.out.println("init");
-		setLayout(mainLayout); 
-		setFormLabel();
-		setFormLayout();
-		setListLayout();
+		setLayout(); 
+		setNavBar(); 
 	}
 
-	private void setListLayout() {  
-		mainLayout.addComponent(listLayout);
-	}
+	private void setNavBar() {
+		Label title = new Label("Menu");
+        title.addStyleName(ValoTheme.MENU_TITLE);
 
-	private void setFormLayout() { 
-		mainLayout.addComponent(formLayout);
-	}
+        Button button_product = new Button("Products", e -> getNavigator().navigateTo("product")); 
+        button_product.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
+        Button button_category = new Button("Categories", e -> getNavigator().navigateTo("category"));
+        button_category.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
 
-	private void setFormLabel() { 
-		com.vaadin.ui.Label label = new com.vaadin.ui.Label("PRODUCT'S FORM");
-		mainLayout.addComponent(label);
-	}
+        CssLayout menu = new CssLayout(title, button_product, button_category);
+        menu.addStyleName(ValoTheme.MENU_ROOT); 
+        
+        CssLayout viewContainer = new CssLayout(); 
+        
+        mainLayout.addComponents(menu,viewContainer);
 
-	private void setLayout(VerticalLayout mainLayout2) {
-		mainLayout = new VerticalLayout(); 
-		mainLayout.setMargin(true);
-		mainLayout.setSpacing(true); 
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addView("", DefaultView.class);
+        navigator.addView("product", productView);
+        navigator.addView("category", categoryView);
+		
+	}
+ 
+	 
+	private void setLayout() {
+		mainLayout = new HorizontalLayout();  
+		mainLayout.setSizeFull();
 		setContent(mainLayout); 
 	}
 	

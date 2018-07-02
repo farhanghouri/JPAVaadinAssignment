@@ -13,15 +13,15 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout; 
 
 @Component
-public class ListLayout extends VerticalLayout{
+public class ProductListLayout extends VerticalLayout{
    
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	ProductController productController; 
 	@Autowired
-	ListLayout listLayout;
+	ProductListLayout productListLayout;
 	 
-	public ListLayout() { 
+	public ProductListLayout() { 
 		System.out.println("In ListLayout constructor:");
 	}
 	/**
@@ -45,6 +45,7 @@ public class ListLayout extends VerticalLayout{
 
 	public void createList() {
 		removeAllComponents();
+		
 		setProductLabel();
 		
 		List<ProductModel> list = productController.findAll();
@@ -55,9 +56,8 @@ public class ListLayout extends VerticalLayout{
 		
 	
 		if(list != null)
-			for(ProductModel productModel:list){
-				//addComponent(new ProductList(pm));  
-				addComponent(ctx.getBean(ProductList.class,productModel,productController,listLayout));
+			for(ProductModel productModel:list){ 
+				addComponent(ctx.getBean(ProductList.class,productModel,productController,productListLayout));
 			}
 		 
         ctx.close(); 
