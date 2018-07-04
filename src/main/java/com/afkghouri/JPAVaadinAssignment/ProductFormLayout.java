@@ -13,6 +13,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.	ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Component
@@ -48,7 +49,8 @@ public class ProductFormLayout extends VerticalLayout{
 			 
 		 cb_category = new ComboBox<String>("Category"); 
 		 setCategoriesFromDB();
-		 cb_category.setEmptySelectionAllowed(false);    
+		 cb_category.setEmptySelectionAllowed(false); 
+		 
 		 
 		 Button button_submit = new Button("ADD"); 
 		 button_submit.addClickListener(new Button.ClickListener() { 
@@ -80,12 +82,14 @@ public class ProductFormLayout extends VerticalLayout{
 	
 	void setCategoriesFromDB(){
 		list_category.clear(); 
+		
 		categoryController.findAll().forEach(categoryModel->{
 			list_category.add(categoryModel.getName());
 		}); 
 			 
 		cb_category.setItems(list_category);
-		cb_category.setValue(list_category.get(0));
+		if(!list_category.isEmpty())
+			cb_category.setValue(list_category.get(0));
 	}
 	void cascadingEffect(boolean delete_flag){
 		setCategoriesFromDB(); 

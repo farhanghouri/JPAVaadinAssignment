@@ -39,6 +39,7 @@ public class VaadinUI extends UI{
 
         Button button_product = new Button("Products", e -> getNavigator().navigateTo("product")); 
         button_product.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
+        //button_product.setStyleName(".b");
         Button button_category = new Button("Categories", e -> getNavigator().navigateTo("category"));
         button_category.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
 
@@ -53,6 +54,18 @@ public class VaadinUI extends UI{
         navigator.addView("", DefaultView.class);
         navigator.addView("product", productView);
         navigator.addView("category", categoryView);
+       
+        /**
+         * 
+         * 
+         */
+        
+//        UI.getCurrent().getPage().getStyles().add(".b"+
+//        " {\n"+
+//         " color: red;"+
+//        "\n}");
+        
+        
 		
 	}
  

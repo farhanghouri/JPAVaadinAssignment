@@ -20,6 +20,7 @@ public class ProductListLayout extends VerticalLayout{
 	ProductController productController; 
 	@Autowired
 	ProductListLayout productListLayout;
+	
 	 
 	public ProductListLayout() { 
 		System.out.println("In ListLayout constructor:");
