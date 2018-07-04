@@ -8,12 +8,12 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.	ui.ComboBox;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.TextField; 
 import com.vaadin.ui.VerticalLayout;
 
 @Component
@@ -27,7 +27,11 @@ public class ProductFormLayout extends VerticalLayout{
 	@Autowired
 	ProductListLayout productListLayout; 
 	@Autowired
+	ProductModel productModel;
+	@Autowired
 	CategoryController categoryController; 
+	Binder<ProductModel> binder;
+	
 
 	List<String> list_category = new ArrayList<>();
      
@@ -51,12 +55,19 @@ public class ProductFormLayout extends VerticalLayout{
 		 setCategoriesFromDB();
 		 cb_category.setEmptySelectionAllowed(false); 
 		 
+		 setBinder();
+		 
 		 
 		 Button button_submit = new Button("ADD"); 
 		 button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) { 
-			    	save();
+					if(binder.isValid())
+						save();
+					else
+						Notification.show("Invalid Field",
+				                "insertion failed!",
+				                Notification.Type.ERROR_MESSAGE);
 			    }
 		 });  
 		
@@ -64,12 +75,34 @@ public class ProductFormLayout extends VerticalLayout{
 		
 	}
 	
-	private void save(){
-		ProductModel productModel = new ProductModel(); 
-    	productModel.setName(textField_name.getValue());
-    	productModel.setPrice(Integer.parseInt(textField_price.getValue()));
-    	productModel.setQuantity(Integer.parseInt(textField_quantity.getValue())); 
-    	 
+	private void setBinder() {  
+		binder = new Binder<>();
+		
+		binder.forField(textField_name)
+		.asRequired("name should be required")
+			  .bind(ProductModel::getName,ProductModel::setName);
+		
+		binder.forField(textField_price)
+		       .withConverter(
+			    Integer::valueOf,
+			    String::valueOf, 
+			    "price should be an integer")
+        .withValidator(quantity -> quantity > 0,
+                "price should be > 0 ")
+		      .bind(ProductModel::getPrice,ProductModel::setPrice);
+		
+		binder.forField(textField_quantity) 
+	       .withConverter(
+			    Integer::valueOf,
+			    String::valueOf, 
+			    "quantity should be an integer")
+           .withValidator(quantity -> quantity > 0,
+                 "quantity should be > 0 ")
+	      .bind(ProductModel::getQuantity,ProductModel::setQuantity);
+
+		binder.setBean(productModel);
+	}
+	private void save(){  
     	productModel.setCategoryModel(categoryController.findByName(cb_category.getValue()));  
     	 
     	productController.save(productModel); 

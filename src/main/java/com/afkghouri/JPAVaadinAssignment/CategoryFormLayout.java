@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vaadin.data.Binder; 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
@@ -15,11 +16,14 @@ import com.vaadin.ui.Button.ClickEvent;
 public class CategoryFormLayout extends VerticalLayout{
  
 	private static final long serialVersionUID = 1L;
-	TextField name;
+	TextField textField_name;
 	@Autowired
 	CategoryController categoryController;
 	@Autowired
 	CategoryListLayout categoryListLayout;
+	@Autowired
+	CategoryModel categoryModel;
+	Binder<CategoryModel> binder;
 	
 	@Autowired
 	ProductFormLayout productFormLayout;
@@ -35,23 +39,45 @@ public class CategoryFormLayout extends VerticalLayout{
     }
 
 	private void createForm() {
-		name = new TextField("enter name");
+		textField_name = new TextField("enter name");
 		
+		setBinder();
+		
+		  
 		Button button_submit = new Button("Add");
 		button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) { 
-			    	save();
+					if(binder.isValid())
+						save();
+					else
+						Notification.show("Invalid Field",
+				                "insertion failed!",
+				                Notification.Type.ERROR_MESSAGE);
 			    } 
 		 });
 		
-		addComponents(name,button_submit); 
+		addComponents(textField_name,button_submit); 
 	}
 
-	protected void save() {
-		CategoryModel categoryModel = new CategoryModel(); 
-		categoryModel.setName(name.getValue());  
-    	   
+	private void setBinder() { 
+		binder = new Binder<>();
+		
+		// Start by defining the Field instance to use
+		binder.forField(textField_name)
+		  .asRequired("name should be required")
+		  // Finalize by doing the actual binding to the CategoryModel class
+		  .bind(
+		    // Callback that loads the name from a categoryModel instance
+		    CategoryModel::getName,
+		    // Callback that saves the name in a categoryModel instance
+		    CategoryModel::setName); 
+		
+		binder.setBean(categoryModel);
+		
+	}
+
+	protected void save() { 
 		categoryController.save(categoryModel); 
     	 
 		categoryListLayout.createList();
