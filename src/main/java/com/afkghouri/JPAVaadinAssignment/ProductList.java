@@ -4,8 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import com.vaadin.data.HasValue.ValueChangeEvent;
-import com.vaadin.data.HasValue.ValueChangeListener;
-import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.data.HasValue.ValueChangeListener; 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -35,10 +34,8 @@ public class ProductList extends HorizontalLayout{
 		quantity = new TextField(); 
 		checkBox = new CheckBox("",true);  
 		  
-		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() { 
-			 
-			private static final long serialVersionUID = 1L;
-
+		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() {  
+			private static final long serialVersionUID = 1L; 
 			@Override
 			public void valueChange(ValueChangeEvent<Boolean> event) { 
 				name.setReadOnly(checkBox.getValue());

@@ -12,7 +12,7 @@ public class ProductView extends VerticalLayout implements View {
 	 
 	private static final long serialVersionUID = 1L;
 	@Autowired
-	ProductFormLayout formLayout;
+	ProductFormLayout productFormLayout;
 	@Autowired
 	ProductListLayout productListLayout;
 	
@@ -23,7 +23,7 @@ public class ProductView extends VerticalLayout implements View {
     @PostConstruct
 	void init(){
     	System.out.println("In ProductView init:");
-    	addComponent(formLayout);
+    	addComponent(productFormLayout);
     	addComponent(productListLayout);
     }
 

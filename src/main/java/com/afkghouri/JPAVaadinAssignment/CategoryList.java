@@ -35,8 +35,7 @@ public class CategoryList extends HorizontalLayout{
 		checkBox = new CheckBox("",true);  
 		  
 		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() { 
-			private static final long serialVersionUID = 1L;
-
+			private static final long serialVersionUID = 1L; 
 			@Override
 			public void valueChange(ValueChangeEvent<Boolean> event) { 
 				name.setReadOnly(checkBox.getValue()); 

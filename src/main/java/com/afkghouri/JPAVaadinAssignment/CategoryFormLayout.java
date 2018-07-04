@@ -15,7 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class CategoryFormLayout extends VerticalLayout{
  
 	private static final long serialVersionUID = 1L;
-	TextField textField_name;
+	TextField name;
 	@Autowired
 	CategoryController categoryController;
 	@Autowired
@@ -35,7 +35,8 @@ public class CategoryFormLayout extends VerticalLayout{
     }
 
 	private void createForm() {
-		textField_name = new TextField("enter name");
+		name = new TextField("enter name");
+		
 		Button button_submit = new Button("Add");
 		button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
@@ -44,12 +45,12 @@ public class CategoryFormLayout extends VerticalLayout{
 			    } 
 		 });
 		
-		addComponents(textField_name,button_submit); 
+		addComponents(name,button_submit); 
 	}
 
 	protected void save() {
 		CategoryModel categoryModel = new CategoryModel(); 
-		categoryModel.setName(textField_name.getValue());  
+		categoryModel.setName(name.getValue());  
     	   
 		categoryController.save(categoryModel); 
     	 
