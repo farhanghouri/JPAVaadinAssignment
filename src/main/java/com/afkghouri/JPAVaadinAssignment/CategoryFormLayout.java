@@ -73,7 +73,7 @@ public class CategoryFormLayout extends VerticalLayout{
 		    // Callback that saves the name in a categoryModel instance
 		    CategoryModel::setName); 
 		
-		binder.setBean(categoryModel);
+		binder.setBean(categoryModel); /**  TWO WAY BINDING **/
 		
 	}
 

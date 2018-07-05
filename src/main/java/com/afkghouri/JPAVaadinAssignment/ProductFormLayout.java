@@ -79,26 +79,28 @@ public class ProductFormLayout extends VerticalLayout{
 		binder = new Binder<>();
 		
 		binder.forField(textField_name)
-		.asRequired("name should be required")
+		      .asRequired("name should be required")
 			  .bind(ProductModel::getName,ProductModel::setName);
 		
 		binder.forField(textField_price)
+		       .asRequired("price should be required")
 		       .withConverter(
 			    Integer::valueOf,
 			    String::valueOf, 
 			    "price should be an integer")
-        .withValidator(quantity -> quantity > 0,
+               .withValidator(quantity -> quantity > 0,
                 "price should be > 0 ")
-		      .bind(ProductModel::getPrice,ProductModel::setPrice);
+		       .bind(ProductModel::getPrice,ProductModel::setPrice);
 		
 		binder.forField(textField_quantity) 
-	       .withConverter(
+	            .asRequired("quantity should be required")
+	            .withConverter(
 			    Integer::valueOf,
 			    String::valueOf, 
 			    "quantity should be an integer")
-           .withValidator(quantity -> quantity > 0,
+               .withValidator(quantity -> quantity > 0,
                  "quantity should be > 0 ")
-	      .bind(ProductModel::getQuantity,ProductModel::setQuantity);
+	           .bind(ProductModel::getQuantity,ProductModel::setQuantity);
 
 		binder.setBean(productModel);
 	}
