@@ -1,5 +1,8 @@
 package com.afkghouri.JPAVaadinAssignment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList; 
 import java.util.List;
 
@@ -9,11 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.Binder;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.	ui.ComboBox;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField; 
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.Upload;
+import com.vaadin.ui.Upload.Receiver;
+import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 
 @Component
@@ -34,6 +46,7 @@ public class ProductFormLayout extends VerticalLayout{
 	
 
 	List<String> list_category = new ArrayList<>();
+	ImageUploader receiver;
      
 	public ProductFormLayout(){ 
 		System.out.println("In FormLayout constructor:");
@@ -57,13 +70,22 @@ public class ProductFormLayout extends VerticalLayout{
 		 
 		 setBinder();
 		 
+		 setImageUploader();
+		 
 		 
 		 Button button_submit = new Button("ADD"); 
 		 button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) { 
-					if(binder.isValid())
-						save();
+				   if(binder.isValid()){
+						if(receiver.image.isVisible()){
+						   receiver.image.setVisible(false);
+						   save();
+						}else
+							Notification.show("Product Image must be uploaded",
+				                "insertion failed!",
+				                Notification.Type.ERROR_MESSAGE);
+					}
 					else
 						Notification.show("Invalid Field",
 				                "insertion failed!",
@@ -75,6 +97,10 @@ public class ProductFormLayout extends VerticalLayout{
 		
 	}
 	
+	private void setImageUploader() { 
+	    receiver = new ImageUploader();
+		addComponent(receiver.setImageUploader());
+	}
 	private void setBinder() {  
 		binder = new Binder<>();
 		
@@ -105,11 +131,13 @@ public class ProductFormLayout extends VerticalLayout{
 		binder.setBean(productModel);
 	}
 	private void save(){  
+		productModel.setOid(0); // reason: singleton bean
     	productModel.setCategoryModel(categoryController.findByName(cb_category.getValue()));  
     	 
     	productController.save(productModel); 
     	
     	productListLayout.createList(); 
+    	System.out.println("a: "+productModel.oid);
 		Notification.show("New Product Added",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
@@ -132,5 +160,7 @@ public class ProductFormLayout extends VerticalLayout{
 		   productListLayout.createList();
 	}
 	 
+	
+	
 	
 }
