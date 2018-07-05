@@ -39,28 +39,28 @@ public class VaadinUI extends UI{
 	}
 
 	private void setNavBar() {
-//		  Label title = new Label("Menu");
-//        title.addStyleName(ValoTheme.MENU_TITLE);
-//
-//        Button button_product = new Button("Products", e -> getNavigator().navigateTo("product")); 
-//        button_product.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
-//        //button_product.setStyleName(".b");
-//        Button button_category = new Button("Categories", e -> getNavigator().navigateTo("category"));
-//        button_category.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
-//
-//        CssLayout menu = new CssLayout(title, button_product, button_category);
-//        menu.addStyleName(ValoTheme.MENU_ROOT); 
-//      //  menu.setHeight("200%");
-//       // menu.setWidth("10%");
-//        
-//        CssLayout viewContainer = new CssLayout();  
-//        
-//        mainLayout.addComponents(menu,viewContainer);
-//
-//        Navigator navigator = new Navigator(this, viewContainer);
-//        navigator.addView("", DefaultView.class);
-//        navigator.addView("product", productView);
-//        navigator.addView("category", categoryView);
+		Label title = new Label("Menu");
+        title.addStyleName(ValoTheme.MENU_TITLE);
+
+        Button button_product = new Button("Products", e -> getNavigator().navigateTo("product")); 
+        button_product.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
+        //button_product.setStyleName(".b");
+        Button button_category = new Button("Categories", e -> getNavigator().navigateTo("category"));
+        button_category.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
+
+        CssLayout menu = new CssLayout(title, button_product, button_category);
+        menu.addStyleName(ValoTheme.MENU_ROOT); 
+      //  menu.setHeight("200%");
+       // menu.setWidth("10%");
+        
+        CssLayout viewContainer = new CssLayout();  
+        
+        mainLayout.addComponents(menu,viewContainer);
+
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addView("", DefaultView.class);
+        navigator.addView("product", productView);
+        navigator.addView("category", categoryView);
         
         /**
          * 
@@ -74,8 +74,8 @@ public class VaadinUI extends UI{
 		
 		 
 		editImageWindow.constructWindow();
-		addWindow(editImageWindow);
-        
+//		addWindow(editImageWindow);
+//        editImageWindow.close();
        
         
 		

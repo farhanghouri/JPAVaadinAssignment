@@ -25,6 +25,8 @@ public class ProductModel {
      public int price;
      @Column(name="quantity")
      public int quantity;
+     @Column(name="path")
+     public String path;
       
      
      @ManyToOne
@@ -62,6 +64,12 @@ public class ProductModel {
 	}
 	public void setCategoryModel(CategoryModel categoryModel) {
 		this.categoryModel = categoryModel;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
 	}
 	 
 

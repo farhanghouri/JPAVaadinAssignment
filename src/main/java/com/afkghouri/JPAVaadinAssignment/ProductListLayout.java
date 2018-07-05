@@ -20,6 +20,8 @@ public class ProductListLayout extends VerticalLayout{
 	ProductController productController; 
 	@Autowired
 	ProductListLayout productListLayout;
+	@Autowired
+	EditImageWindow editImageWindow;
 	
 	 
 	public ProductListLayout() { 
@@ -58,7 +60,7 @@ public class ProductListLayout extends VerticalLayout{
 	
 		if(list != null)
 			for(ProductModel productModel:list){ 
-				addComponent(ctx.getBean(ProductList.class,productModel,productController,productListLayout));
+				addComponent(ctx.getBean(ProductList.class,productModel,productController,productListLayout,editImageWindow));
 			}
 		 
         ctx.close(); 

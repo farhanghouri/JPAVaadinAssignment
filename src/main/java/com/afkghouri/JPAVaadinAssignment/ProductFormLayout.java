@@ -70,7 +70,7 @@ public class ProductFormLayout extends VerticalLayout{
 		 
 		 setBinder();
 		 
-		 setImageUploader();
+		 setImageUploaderLayout();
 		 
 		 
 		 Button button_submit = new Button("ADD"); 
@@ -97,9 +97,9 @@ public class ProductFormLayout extends VerticalLayout{
 		
 	}
 	
-	private void setImageUploader() { 
+	private void setImageUploaderLayout() { 
 	    receiver = new ImageUploader();
-		addComponent(receiver.setImageUploader());
+		addComponent(receiver.setImageUploaderLayout());
 	}
 	private void setBinder() {  
 		binder = new Binder<>();
@@ -132,12 +132,13 @@ public class ProductFormLayout extends VerticalLayout{
 	}
 	private void save(){  
 		productModel.setOid(0); // reason: singleton bean
+		productModel.setPath(receiver.absolutePath);
     	productModel.setCategoryModel(categoryController.findByName(cb_category.getValue()));  
     	 
     	productController.save(productModel); 
     	
     	productListLayout.createList(); 
-    	System.out.println("a: "+productModel.oid);
+
 		Notification.show("New Product Added",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);

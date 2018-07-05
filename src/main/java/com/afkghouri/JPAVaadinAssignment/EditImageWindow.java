@@ -9,8 +9,7 @@ import com.vaadin.ui.Window;
 @Component
 public class EditImageWindow extends Window{
  
-	private static final long serialVersionUID = 1L;
-	String absolutePath="/Users/farhan/Documents/MAVEN/JPAVaadinAssignment/src/main/resources/images/samsung.jpg";
+	private static final long serialVersionUID = 1L; 
 	ImageUploader receiver;
 
 	public EditImageWindow() { 
@@ -22,17 +21,15 @@ public class EditImageWindow extends Window{
 	
 	public void constructWindow(){  
 
-		setImageUploader();
+		setImageUploaderLayout();
         // Center it in the browser window
-        center();
+        center();  
 
 	}
 	
-	private void setImageUploader() {
+	private void setImageUploaderLayout() {
 		receiver = new ImageUploader(); 
-		setContent(receiver.setImageUploader());
-		receiver.image.setVisible(true);
-		receiver.image.setSource(new FileResource(new File(absolutePath)));
+		setContent(receiver.setImageUploaderLayout()); 
 		
 	}
 	

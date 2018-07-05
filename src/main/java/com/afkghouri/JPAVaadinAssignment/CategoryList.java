@@ -60,7 +60,7 @@ public class CategoryList extends HorizontalLayout{
 			public void buttonClick(ClickEvent event) {  
 			   if(checkBox.getValue())
 				   Notification.show("Uncheck:",
-			                "To Update.",
+			                "To edit Text Fields",
 			                Notification.Type.HUMANIZED_MESSAGE);
 			   else{
 				   update(); 
