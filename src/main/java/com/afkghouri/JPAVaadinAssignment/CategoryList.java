@@ -1,6 +1,17 @@
 package com.afkghouri.JPAVaadinAssignment;
  
 
+import java.io.File;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+
+import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.ui.Button;
@@ -11,6 +22,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+
 public class CategoryList extends HorizontalLayout{
   
 	private static final long serialVersionUID = 1L;
@@ -19,7 +31,8 @@ public class CategoryList extends HorizontalLayout{
 	Button button_update,button_delete; 
 	CategoryController categoryController;
     CategoryModel categoryModel;
-    CategoryListLayout categoryListLayout;
+    CategoryListLayout categoryListLayout; 
+	Binder<CategoryModel> binder;
     
     ProductFormLayout productFormLayout;
     
@@ -32,6 +45,7 @@ public class CategoryList extends HorizontalLayout{
 		this.productFormLayout = productFormLayout;
 		
 		name = new TextField();
+		name.setReadOnly(true);
 		checkBox = new CheckBox("",true);  
 		  
 		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() { 
@@ -42,8 +56,7 @@ public class CategoryList extends HorizontalLayout{
 			}
 		});
 		
-		name.setValue(categoryModel.getName());
-		name.setReadOnly(true);
+		setBinder();
 		
 		button_update = new Button("Update");
 		button_update.setData(categoryModel.getOid());
@@ -63,9 +76,15 @@ public class CategoryList extends HorizontalLayout{
 			                "To edit Text Fields",
 			                Notification.Type.HUMANIZED_MESSAGE);
 			   else{
-				   update(); 
-				   checkBox.setValue(true);
-				   name.setReadOnly(true); ;
+				   if(binder.isValid()){
+					   update(); 
+					   checkBox.setValue(true);
+					   name.setReadOnly(true); 
+				   }
+					else
+						Notification.show("Invalid Field",
+				                "insertion failed!",
+				                Notification.Type.ERROR_MESSAGE);
 			   }
 		    }
 	    });
@@ -77,7 +96,25 @@ public class CategoryList extends HorizontalLayout{
 	   });
 	}
 
+	private void setBinder() { 
+		binder = new Binder<>();
+		
+		// Start by defining the Field instance to use
+		binder.forField(name)
+		  .asRequired("name should be required")
+		  // Finalize by doing the actual binding to the CategoryModel class
+		  .bind(
+		    // Callback that loads the name from a categoryModel instance
+		    CategoryModel::getName,
+		    // Callback that saves the name in a categoryModel instance
+		    CategoryModel::setName); 
+		
+		binder.setBean(categoryModel); /**  TWO WAY BINDING **/
+		
+	}
 	protected void deleteById(long oid) {
+		deleteImagesAgainstOid(oid);
+		
 		categoryController.deleteById(oid);
 		
 		categoryListLayout.createList(); 
@@ -88,8 +125,7 @@ public class CategoryList extends HorizontalLayout{
 		
 		launchCascadingEffect(true);
 	} 
-	protected void update() { 
-    	categoryModel.setName(name.getValue());   
+	protected void update() {   
     	
     	categoryController.save(categoryModel);  
     	
@@ -105,4 +141,18 @@ public class CategoryList extends HorizontalLayout{
 		productFormLayout.cascadingEffect(flag); 
 	}
 	
+	protected void deleteImagesAgainstOid(long oid){
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		Query q = entityManager.createNativeQuery("SELECT * FROM products p WHERE p.categories_oid = ?",ProductModel.class);
+		q.setParameter(1, oid);
+
+		List<ProductModel> list = q.getResultList(); 
+		for (ProductModel productModel : list) {
+			new File(productModel.path).delete();
+		} 
+		 
+		entityManager.close();
+		
+	}
 }

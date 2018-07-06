@@ -3,9 +3,11 @@ package com.afkghouri.JPAVaadinAssignment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
@@ -23,12 +25,10 @@ class ImageUploader implements Receiver, SucceededListener {
 	String absolutePath;
     public Embedded image;
     Upload upload;
+    Button button_img_update;
     
 
-    public ImageUploader(){}
-    public ImageUploader(Embedded image) {
-		this.image = image;
-	}
+    public ImageUploader(){} 
    
     public Panel setImageUploaderLayout(){
     	       // Show uploaded file in this placeholder
@@ -39,18 +39,21 @@ class ImageUploader implements Receiver, SucceededListener {
     		    upload = new Upload("Upload Image Here", this);
     			upload.setButtonCaption("Start Upload");
     			upload.addSucceededListener(this);
+    			
+    			button_img_update = new Button("update image");
+    			button_img_update.setVisible(false);
 
     			// Put the components (upload, image) in a panel
     			Panel panel = new Panel("Product Image Storage");
     			Layout panelContent = new VerticalLayout();
-    			panelContent.addComponents(upload, image);
+    			panelContent.addComponents(upload, image,button_img_update);
     			panel.setContent(panelContent);
     			return panel;
     }
     @Override
     public OutputStream receiveUpload(String filename,
-                                      String mimeType) {
-    	this.absolutePath = "/Users/farhan/Documents/MAVEN/JPAVaadinAssignment/src/main/resources/images/"+filename;
+                                      String mimeType) {  
+    	this.absolutePath = "/Users/farhan/Documents/MAVEN/JPAVaadinAssignment/src/main/resources/images/" + (new Timestamp(System.currentTimeMillis())) + filename;
         // Create upload stream
         FileOutputStream fos = null; // Stream to write to
         try {
@@ -72,7 +75,7 @@ class ImageUploader implements Receiver, SucceededListener {
         // Show the uploaded file in the image viewer
         image.setVisible(true);
         image.setSource(new FileResource(file));
-		Notification.show("Image Saved",
+		Notification.show("Image Uploaded",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
     }

@@ -78,7 +78,7 @@ public class CategoryFormLayout extends VerticalLayout{
 	}
 
 	protected void save() { 
-		categoryModel.setOid(0); // reason: singleton bean
+		categoryModel.setOid(0); // reason: singleton bean. advantage: each time generate unique oid
 		categoryController.save(categoryModel); 
     	 
 		categoryListLayout.createList();

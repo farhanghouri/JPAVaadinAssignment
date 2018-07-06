@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Scope;
 public class MyConfiguration {
 	    @Bean
 	    @Scope(value="prototype")
-	    public ProductList myBean(ProductModel productModel,ProductController productController,ProductListLayout productListLayout,EditImageWindow editImageWindow) { 
-	    	return new ProductList(productModel,productController,productListLayout,editImageWindow);
+	    public ProductList myBean(ProductModel productModel,ProductController productController,ProductListLayout productListLayout) { 
+	    	return new ProductList(productModel,productController,productListLayout);
 	    }
 	     
 }

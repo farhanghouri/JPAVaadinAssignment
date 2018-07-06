@@ -5,6 +5,7 @@ import java.io.File;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.server.FileResource;
@@ -27,6 +28,8 @@ public class ProductList extends HorizontalLayout{
 	ProductController productController;
 	ProductListLayout productListLayout; 
 	EditImageWindow editImageWindow;
+	
+	Binder<ProductModel> binder;
 
 	public ProductList() { 
 	} 
@@ -35,9 +38,12 @@ public class ProductList extends HorizontalLayout{
 		System.out.println("In ProductList init: ");
 		
 	    name     = new TextField();
+	    name.setReadOnly(true);  
 		price    = new TextField();
-		quantity = new TextField(); 
-		checkBox = new CheckBox("",true);  
+		price.setReadOnly(true); 
+		quantity = new TextField();
+		quantity.setReadOnly(true); 
+		checkBox = new CheckBox("",true);
 		  
 		checkBox.addValueChangeListener(new ValueChangeListener<Boolean>() {  
 			private static final long serialVersionUID = 1L; 
@@ -47,14 +53,9 @@ public class ProductList extends HorizontalLayout{
 				price.setReadOnly(checkBox.getValue());
 				quantity.setReadOnly(checkBox.getValue());
 			}
-		});
+		}); 
 		
-		name.setValue(productModel.getName());
-		name.setReadOnly(true); 
-		price.setValue(String.valueOf(productModel.getPrice()));
-		price.setReadOnly(true);
-		quantity.setValue(String.valueOf(productModel.getQuantity())); 
-		quantity.setReadOnly(true);
+		setBinder();
 		
 		button_image = new Button("image");
 		button_update = new Button("Update");
@@ -66,12 +67,28 @@ public class ProductList extends HorizontalLayout{
 		
 		addComponents(checkBox,name,price,quantity,button_image,button_update,button_delete);
 		
+
+		editImageWindow = new EditImageWindow();
 		button_image.addClickListener(event->{
+			editImageWindow.receiver.absolutePath = null; // reason: deduct image is updated
 			editImageWindow.receiver.image.setVisible(true);
-			editImageWindow.receiver.image.setSource(new FileResource(new File(productModel.path))); 
-			editImageWindow.setModal(true);
+			editImageWindow.receiver.image.setSource(new FileResource(new File(productModel.path)));  
+			editImageWindow.receiver.button_img_update.setVisible(true);
+			editImageWindow.setModal(true); // advantage: edit mode finish in background UI
 			UI.getCurrent().addWindow(editImageWindow);
 		});
+		editImageWindow.receiver.button_img_update.addClickListener(event->{
+			if(editImageWindow.receiver.absolutePath != null){
+				new File(productModel.path).delete();
+				productModel.path = editImageWindow.receiver.absolutePath;
+				productController.save(productModel); 
+			}
+			editImageWindow.close();
+			Notification.show("Image Updated",
+	                "Successfully!",
+	                Notification.Type.HUMANIZED_MESSAGE);
+		});
+		
 		button_update.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
 				public void buttonClick(ClickEvent event) {  
@@ -80,11 +97,16 @@ public class ProductList extends HorizontalLayout{
 				                "To edit Text Fields.",
 				                Notification.Type.HUMANIZED_MESSAGE);
 				   else{
-					   update(); 
-					   checkBox.setValue(true);
-					   name.setReadOnly(true);
-					   price.setReadOnly(true);
-					   quantity.setReadOnly(true);
+					   if(binder.isValid()){
+						   update(); 
+						   checkBox.setValue(true);
+						   name.setReadOnly(true);
+						   price.setReadOnly(true);
+						   quantity.setReadOnly(true);
+					   }else
+						   Notification.show("Invalid Field",
+					                "insertion failed!",
+					                Notification.Type.ERROR_MESSAGE);
 				   }
 			    }
 		 });
@@ -98,13 +120,42 @@ public class ProductList extends HorizontalLayout{
 		
 		 
 	}
+	private void setBinder() {  
+		binder = new Binder<>();
+		
+		binder.forField(name)
+		      .asRequired("name should be required")
+			  .bind(ProductModel::getName,ProductModel::setName);
+		
+		binder.forField(price)
+		       .asRequired("price should be required")
+		       .withConverter(
+			    Integer::valueOf,
+			    String::valueOf, 
+			    "price should be an integer")
+               .withValidator(quantity -> quantity > 0,
+                "price should be > 0 ")
+		       .bind(ProductModel::getPrice,ProductModel::setPrice);
+		
+		binder.forField(quantity) 
+	            .asRequired("quantity should be required")
+	            .withConverter(
+			    Integer::valueOf,
+			    String::valueOf, 
+			    "quantity should be an integer")
+               .withValidator(quantity -> quantity > 0,
+                 "quantity should be > 0 ")
+	           .bind(ProductModel::getQuantity,ProductModel::setQuantity);
+
+		 
+		binder.setBean(productModel);
+	}
 	
-	public ProductList(ProductModel productModel,ProductController productController,ProductListLayout productListLayout,EditImageWindow editImageWindow){
+	public ProductList(ProductModel productModel,ProductController productController,ProductListLayout productListLayout){
 		System.out.println("In ProductList constructor: ");
 		this.productModel = productModel;
 		this.productController = productController;
-		this.productListLayout = productListLayout;
-		this.editImageWindow =  editImageWindow;
+		this.productListLayout = productListLayout; 
 	}
 
 	
@@ -112,14 +163,13 @@ public class ProductList extends HorizontalLayout{
 		productController.deleteById(oid);
 		
 		productListLayout.createList(); 
+		
+		new File(productModel.path).delete();
 		Notification.show("Deleted",
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
 	} 
-	protected void update() { 
-    	productModel.setName(name.getValue());
-    	productModel.setPrice(Integer.parseInt(price.getValue()));
-    	productModel.setQuantity(Integer.parseInt(quantity.getValue()));  
+	protected void update() {  
     	
     	productController.save(productModel); 
     	 

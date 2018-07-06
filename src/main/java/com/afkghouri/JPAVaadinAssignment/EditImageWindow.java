@@ -1,12 +1,10 @@
 package com.afkghouri.JPAVaadinAssignment;
 
-import java.io.File;
-import org.springframework.stereotype.Component;
-
-import com.vaadin.server.FileResource; 
+ 
+ 
 import com.vaadin.ui.Window;
 
-@Component
+ 
 public class EditImageWindow extends Window{
  
 	private static final long serialVersionUID = 1L; 
@@ -14,11 +12,12 @@ public class EditImageWindow extends Window{
 
 	public EditImageWindow() { 
 		super("Product Image in Edit Mode");
+		constructWindow();
 	} 
 	public EditImageWindow(String name) {
 		super(name);
 	}
-	
+	 
 	public void constructWindow(){  
 
 		setImageUploaderLayout();

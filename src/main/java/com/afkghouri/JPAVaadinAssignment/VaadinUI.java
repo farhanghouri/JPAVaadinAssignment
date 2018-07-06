@@ -1,8 +1,6 @@
 package com.afkghouri.JPAVaadinAssignment;
-
-import org.hibernate.annotations.Columns;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+ 
+import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
@@ -12,9 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.UI; 
 import com.vaadin.ui.themes.ValoTheme;
  
 
@@ -27,9 +23,7 @@ public class VaadinUI extends UI{
 	@Autowired
 	ProductView productView;
 	@Autowired
-	CategoryView categoryView;
-	@Autowired  
-	EditImageWindow editImageWindow;
+	CategoryView categoryView; 
 	 
 	@Override
 	protected void init(VaadinRequest request) { 
@@ -72,10 +66,7 @@ public class VaadinUI extends UI{
 //         " color: red;"+
 //        "\n}");
 		
-		 
-		editImageWindow.constructWindow();
-//		addWindow(editImageWindow);
-//        editImageWindow.close();
+		  
        
         
 		

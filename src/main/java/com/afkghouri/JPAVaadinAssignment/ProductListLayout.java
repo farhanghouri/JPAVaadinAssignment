@@ -3,6 +3,7 @@ package com.afkghouri.JPAVaadinAssignment;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext; 
@@ -19,9 +20,8 @@ public class ProductListLayout extends VerticalLayout{
 	@Autowired
 	ProductController productController; 
 	@Autowired
-	ProductListLayout productListLayout;
-	@Autowired
-	EditImageWindow editImageWindow;
+	ProductListLayout productListLayout; 
+	 
 	
 	 
 	public ProductListLayout() { 
@@ -60,7 +60,7 @@ public class ProductListLayout extends VerticalLayout{
 	
 		if(list != null)
 			for(ProductModel productModel:list){ 
-				addComponent(ctx.getBean(ProductList.class,productModel,productController,productListLayout,editImageWindow));
+				addComponent(ctx.getBean(ProductList.class,productModel,productController,productListLayout));
 			}
 		 
         ctx.close(); 
