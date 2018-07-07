@@ -68,7 +68,7 @@ public class ProductList extends HorizontalLayout{
 		addComponents(checkBox,name,price,quantity,button_image,button_update,button_delete);
 		
 
-		editImageWindow = new EditImageWindow();
+		editImageWindow = new EditImageWindow(); // reason: each record must have its own image window
 		button_image.addClickListener(event->{
 			editImageWindow.receiver.absolutePath = null; // reason: deduct image is updated
 			editImageWindow.receiver.image.setVisible(true);
@@ -120,6 +120,14 @@ public class ProductList extends HorizontalLayout{
 		
 		 
 	}
+	
+	public ProductList(ProductModel productModel,ProductController productController,ProductListLayout productListLayout){
+		System.out.println("In ProductList constructor: ");
+		this.productModel = productModel;
+		this.productController = productController;
+		this.productListLayout = productListLayout; 
+	}
+	
 	private void setBinder() {  
 		binder = new Binder<>();
 		
@@ -145,17 +153,9 @@ public class ProductList extends HorizontalLayout{
 			    "quantity should be an integer")
                .withValidator(quantity -> quantity > 0,
                  "quantity should be > 0 ")
-	           .bind(ProductModel::getQuantity,ProductModel::setQuantity);
-
+	           .bind(ProductModel::getQuantity,ProductModel::setQuantity); 
 		 
 		binder.setBean(productModel);
-	}
-	
-	public ProductList(ProductModel productModel,ProductController productController,ProductListLayout productListLayout){
-		System.out.println("In ProductList constructor: ");
-		this.productModel = productModel;
-		this.productController = productController;
-		this.productListLayout = productListLayout; 
 	}
 
 	
@@ -169,8 +169,7 @@ public class ProductList extends HorizontalLayout{
                 "Successfully!",
                 Notification.Type.HUMANIZED_MESSAGE);
 	} 
-	protected void update() {  
-    	
+	protected void update() {   
     	productController.save(productModel); 
     	 
 		Notification.show("Updated",

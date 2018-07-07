@@ -42,8 +42,7 @@ public class CategoryFormLayout extends VerticalLayout{
 		textField_name = new TextField("enter name");
 		
 		setBinder();
-		
-		  
+		 
 		Button button_submit = new Button("Add");
 		button_submit.addClickListener(new Button.ClickListener() { 
 				private static final long serialVersionUID = 1L;
