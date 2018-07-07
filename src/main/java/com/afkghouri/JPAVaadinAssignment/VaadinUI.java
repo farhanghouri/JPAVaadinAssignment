@@ -15,7 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
  
 
 @SpringUI
-@Theme("valo")
+@Theme("darktheme")
 public class VaadinUI extends UI{
 
 	private static final long serialVersionUID = 1L; 

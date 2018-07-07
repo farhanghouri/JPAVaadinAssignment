@@ -57,6 +57,7 @@ public class CategoryFormLayout extends VerticalLayout{
 		 });
 		
 		addComponents(textField_name,button_submit); 
+		setStyleName("FormLayout");
 	}
 
 	private void setBinder() { 

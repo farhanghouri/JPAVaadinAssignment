@@ -9,6 +9,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -58,6 +59,7 @@ public class ProductList extends HorizontalLayout{
 		setBinder();
 		
 		button_image = new Button("image");
+		//button_image.setIcon(new ThemeResource("icons/tick.png"));
 		button_update = new Button("Update");
 		button_update.setData(productModel.getOid());
 		button_update.addStyleName(ValoTheme.BUTTON_PRIMARY);

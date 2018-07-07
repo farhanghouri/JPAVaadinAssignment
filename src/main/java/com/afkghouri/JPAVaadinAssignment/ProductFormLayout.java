@@ -13,7 +13,8 @@ import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.	ui.ComboBox; 
-import com.vaadin.ui.Notification; 
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField; 
 import com.vaadin.ui.VerticalLayout;
 
@@ -48,7 +49,7 @@ public class ProductFormLayout extends VerticalLayout{
 
 	private void createForm() { 
 		 textField_name = new TextField("enter name");
-			 
+	     textField_name.setStyleName("textField_name");
 		 textField_price = new TextField("enter price");
 			 
 		 textField_quantity = new TextField("enter quantity");
@@ -83,6 +84,8 @@ public class ProductFormLayout extends VerticalLayout{
 		 });  
 		
          addComponents(textField_name,textField_price,textField_quantity,cb_category,button_submit);
+         setStyleName("FormLayout");
+         
 		
 	}
 	
